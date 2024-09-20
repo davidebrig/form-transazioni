@@ -28,7 +28,7 @@ h1 {
   font-size: 24px;
   color: #3c4043;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .form-group {
@@ -40,6 +40,7 @@ label {
   color: #5f6368;
   margin-bottom: 8px;
   display: block;
+  font-weight: 600;
 }
 
 input[type="text"],
