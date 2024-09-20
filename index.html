@@ -43,84 +43,47 @@
     const suggestionsList = ["brioche", "pasticceria sirmione", "telepass", "satispay", "icloud", "estetista", "calza befana", "django gioco", "stampa lettera", "bar", "benzina", "merenda", "cookiebot", "rata auto", "integratori", "pagamento", "caffe", "iperal", "bytek", "mc", "autogrill", "focaccia", "mr dick", "ricarica tim", "carta credito", "colazione", "esselunga", "risparmio", "netflix", "piadina", "kart", "pizza", "sigarette", "polizza", "spotify", "maglione venduto", "pizzam", "sig e perdi", "zio pizza", "farmaci", "vapery", "parcheggio", "aruba", "regalo s valentino", "past verga", "chiacchiere", "wipstore 1", "coca", "sisal", "aperitivo", "caparra", "pizze", "cancelleria", "sigarette emotion", "tergi gio", "televisore", "spazzola piatti", "hotel", "pepco", "poke", "pane", "agenzia", "brita", "repcount app", "trenord", "pranzo", "rimborso casa gio", "tubo", "acido m", "fiori", "soundbar sonos", "acqua", "coin", "dominio sg davide", "ikea", "anello", "italmark", "bilancia cover", "scrivania ikea", "eremo", "molla", "cont deposito", "affitto cauzione", "spesina", "spesa", "gratta vinci", "prese", "rimborso gio", "rimborso deliveroo", "amazon adattatori", "pata", "aceto bicarbonato", "l'oreal x elena", "l'oreal x me", "marzo", "rimborso loreal", "mercato", "gelato", "braccio monitor", "biliardo", "tigota", "affitto", "portaposate", "coprimarer", "materasso cose", "eselunga", "svapo", "bollo titoli", "psicologa", "caffee", "cose casa amazon", "hamburger", "polpetteria", "asparagi", "assicurazione", "imac molteni", "tigota", "aliexpress intimo", "filtro cucina amazon", "amazon joystick", "gas enel", "affitto gio luglio", "tim casa", "14esima", "nen luce luglio", "soldi mamma in conto deposito", "abbonamento microsoft", "mobile deghi", "velcro adesivo", "spesina", "spiderman", "cookiebot", "webcam logitech", "booking napoli", "giovanni mese giugno+luglio", "gas enel", "affitto agosto", "luce agosto nen", "colazione", "svapo", "macfact", "mutande", "panta", "calliope", "granita", "lavaggio auto", "cascata delle marmore", "kebab", "svapo pod", "nonni regalo", "pareo gio", "diplomatico", "impermeabili", "regali vacanze", "decathlon", "caffe e pizzetta", "scarpe UA forge 96", "ikea besta", "titoli investimento", "titoli conto deposito", "filma", "noleggio film", "ikea pappa", "film donnie darko", "piadina deliveroo", "bottega verde", "cinesi", "oneblade papa", "affitto agosto", "tim casa luglio", "parcheggio aeroporto", "cinema", "cibo cinema"];
 
     // Precompilazione del campo data con la data corrente in formato GG/MM/AAAA
-    window.onload = function() {
-      const today = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
-      document.getElementById('date').value = today;
-      fetchCategories(); // Carica le categorie
-    };
+    document.getElementById('date').value = new Date().toLocaleDateString('it-IT');
 
-    // Funzione per popolare il menu Categoria con i dati dal foglio Mappatura
-    function fetchCategories() {
-      fetch('https://script.google.com/macros/s/AKfycby57LCrhg9Enm34kz1krze38cRVEZFJhZmZ9854bq1nmNpkGJTaU-N45cTVzn8FNr0k/exec?action=getCategories')
-        .then(response => response.json())
-        .then(data => {
-          const categorySelect = document.getElementById('category');
-          data.categories.forEach(category => {
-            const option = document.createElement('option');
-            option.value = category;
-            option.text = category;
-            categorySelect.add(option);
-          });
-        })
-        .catch(error => {
-          console.error('Errore durante il recupero delle categorie:', error);
-          document.getElementById('error-message').style.display = 'block';
-        });
+    // Funzione per recuperare le categorie
+    async function fetchCategories() {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbwVlGW7wL6r9-mwJJaNIbJMIYEBaYYzwRonV16vChh_gTr2npYMI9uANoC-06c0NTgy/exec?action=getCategories');
+      const data = await response.json();
+      const categorySelect = document.getElementById('category');
+      data.categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        categorySelect.appendChild(option);
+      });
     }
 
-    // Autocompletamento per il campo "Descrizione"
-    const descriptionInput = document.getElementById('description');
-    const suggestionsBox = document.getElementById('suggestions');
+    // Chiamata per recuperare le categorie all'apertura della pagina
+    window.onload = fetchCategories;
 
-    descriptionInput.addEventListener('input', function() {
-      const input = this.value.toLowerCase();
-      suggestionsBox.innerHTML = '';
-      if (input) {
-        const filteredSuggestions = suggestionsList.filter(suggestion => suggestion.toLowerCase().includes(input));
-        filteredSuggestions.forEach(suggestion => {
-          const suggestionItem = document.createElement('div');
-          suggestionItem.className = 'autocomplete-suggestion';
-          suggestionItem.innerText = suggestion;
-          suggestionItem.onclick = function() {
-            descriptionInput.value = suggestion;
-            suggestionsBox.innerHTML = '';
-          };
-          suggestionsBox.appendChild(suggestionItem);
-        });
-      }
-    });
-
-    // Funzione per inviare il form ad Apps Script
-    document.getElementById('transaction-form').addEventListener('submit', function(event) {
+    // Gestione della sottomissione del form
+    document.getElementById('transaction-form').addEventListener('submit', async function(event) {
       event.preventDefault();
       const formData = new FormData(this);
+      const data = Object.fromEntries(formData);
 
-      // Formattazione della data in GG/MM/AAAA
-      const dateInput = document.getElementById('date').value;
-      const formattedDate = new Date(dateInput).toLocaleDateString('it-IT'); // Formattazione in formato italiano
-
-      formData.set('date', formattedDate);  // Sostituisci la data formattata
-
-      document.getElementById('success-message').style.display = 'none';
-      document.getElementById('error-message').style.display = 'none';
-
-      fetch('https://script.google.com/macros/s/AKfycby57LCrhg9Enm34kz1krze38cRVEZFJhZmZ9854bq1nmNpkGJTaU-N45cTVzn8FNr0k/exec', {
-        method: 'POST',
-        body: new URLSearchParams(formData)
-      })
-      .then(response => response.json())
-      .then(result => {
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbwVlGW7wL6r9-mwJJaNIbJMIYEBaYYzwRonV16vChh_gTr2npYMI9uANoC-06c0NTgy/exec', {
+          method: 'POST',
+          body: new URLSearchParams(data)
+        });
+        const result = await response.json();
+        
         if (result.success) {
           document.getElementById('success-message').style.display = 'block';
-          document.getElementById('transaction-form').reset();  // Reset del form dopo invio
+          document.getElementById('error-message').style.display = 'none';
         } else {
-          document.getElementById('error-message').style.display = 'block';
+          throw new Error(result.message);
         }
-      })
-      .catch(error => {
-        console.error('Errore durante l\'invio del form:', error);
+      } catch (error) {
+        document.getElementById('error-message').textContent = error.message;
         document.getElementById('error-message').style.display = 'block';
-      });
+      }
     });
   </script>
 </body>
