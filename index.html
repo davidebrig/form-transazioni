@@ -11,10 +11,25 @@
     <h1>Nuova Transazione</h1>
     <form id="transaction-form">
       <div class="form-group">
+        <label for="date">Data</label>
+        <input type="date" id="date" name="date" required>
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Importo</label>
+        <input type="number" id="amount" name="amount" step="0.01" min="0" inputmode="decimal" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descrizione</label>
+        <input type="text" id="description" name="description">
+      </div>
+
+      <div class="form-group">
         <label for="category">Categoria</label>
         <select id="category" name="category" required></select>
       </div>
-      
+
       <div class="form-group">
         <label for="subcategory">Sottocategoria</label>
         <select id="subcategory" name="subcategory" required></select>
@@ -31,11 +46,13 @@
       </div>
 
       <button type="submit" class="submit-button">Invia</button>
+      <div class="success-message" id="success-message" style="display: none;"></div>
+      <div class="error-message" id="error-message" style="display: none;"></div>
     </form>
   </div>
 
   <script>
-    const apiUrl = 'https://script.google.com/macros/s/AKfycbwy1PBjpwG74QgjA9FG6UOWuotKNf-_aG3MXxTmow3qdfVNgy3L7SGhjIBfHJ9ScZEb/exec';
+    const apiUrl = 'https://script.google.com/macros/s/YOUR_DEPLOYED_URL/exec';
 
     document.addEventListener('DOMContentLoaded', function () {
       fetch(`${apiUrl}?action=getCategories`)
@@ -74,6 +91,44 @@
             document.getElementById('type').value = data.type;
             document.getElementById('class').value = data.class;
           });
+      });
+
+      document.getElementById('transaction-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        const data = {};
+        formData.forEach((value, key) => {
+          data[key] = value;
+        });
+
+        fetch(apiUrl, {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        .then(response => response.json())
+        .then(result => {
+          const successMessage = document.getElementById('success-message');
+          const errorMessage = document.getElementById('error-message');
+          if (result.success) {
+            successMessage.textContent = 'Transazione aggiunta con successo!';
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+            this.reset(); // Resetta il form
+          } else {
+            errorMessage.textContent = 'Errore: ' + result.message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+          }
+        })
+        .catch(error => {
+          const errorMessage = document.getElementById('error-message');
+          errorMessage.textContent = 'Errore di rete: ' + error.message;
+          errorMessage.style.display = 'block';
+        });
       });
     });
   </script>
