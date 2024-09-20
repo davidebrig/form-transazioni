@@ -3,34 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transazione Form</title>
+  <title>Registra Transazione</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="form-container">
-    <h1>V1 Registra una Transazione</h1>
+    <h1>V2 Registra una Transazione</h1>
     <form id="transaction-form">
-      <label for="date">Data:</label>
-      <input type="date" id="date" name="date" required>
+      <div class="form-group">
+        <label for="date">Data:</label>
+        <input type="date" id="date" name="date" required>
+      </div>
 
-      <label for="amount">Importo:</label>
-      <input type="number" id="amount" name="amount" step="0.01" required>
+      <div class="form-group">
+        <label for="amount">Importo:</label>
+        <input type="number" id="amount" name="amount" step="0.01" min="0" inputmode="decimal" required>
+      </div>
 
-      <label for="description">Descrizione:</label>
-      <input type="text" id="description" name="description" required>
+      <div class="form-group">
+        <label for="description">Descrizione:</label>
+        <input type="text" id="description" name="description">
+      </div>
 
-      <label for="category">Categoria:</label>
-      <select id="category" name="category" required>
-        <option value="">Seleziona una categoria</option>
-      </select>
+      <div class="form-group">
+        <label for="category">Categoria:</label>
+        <select id="category" name="category" required>
+          <option value="">Seleziona una categoria</option>
+        </select>
+      </div>
 
-      <button type="submit">Invia</button>
+      <button type="submit" class="submit-button">Invia</button>
       <p id="success-message" class="success-message" style="display:none;">Transazione registrata con successo!</p>
       <p id="error-message" class="error-message" style="display:none;">Si è verificato un errore. Riprova.</p>
     </form>
   </div>
 
   <script>
+    // Precompilazione del campo data con la data corrente in formato GG/MM/AAAA
+    window.onload = function() {
+      const today = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+      document.getElementById('date').value = today;
+      fetchCategories(); // Carica le categorie
+    };
+
     // Funzione per popolare il menu Categoria con i dati dal foglio Mappatura
     function fetchCategories() {
       fetch('https://script.google.com/macros/s/AKfycbyaetiIJYgZn3YhUKAnrlnkmEBScPhdbOGc50xmaF1MRFKrFcuNU_IQUavAYj_irm2y/exec?action=getCategories')
@@ -75,9 +90,6 @@
         document.getElementById('error-message').style.display = 'block';
       });
     });
-
-    // Popolare il menu a tendina delle categorie al caricamento della pagina
-    window.onload = fetchCategories;
   </script>
 </body>
 </html>
