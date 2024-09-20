@@ -8,7 +8,7 @@
 </head>
 <body>
   <div class="form-container">
-    <h1>V2 Registra una Transazione</h1>
+    <h1>V3 Registra una Transazione</h1>
     <form id="transaction-form">
       <div class="form-group">
         <label for="date">Data:</label>
@@ -48,7 +48,7 @@
 
     // Funzione per popolare il menu Categoria con i dati dal foglio Mappatura
     function fetchCategories() {
-      fetch('https://script.google.com/macros/s/AKfycbyaetiIJYgZn3YhUKAnrlnkmEBScPhdbOGc50xmaF1MRFKrFcuNU_IQUavAYj_irm2y/exec?action=getCategories')
+      fetch('https://script.google.com/macros/s/AKfycbxVqgVp0S4TuKLs4OQixU00TyMcL3lRRnFw9cnGVpaVxCdCJpCneKTSyhFywEFsrJz_/exec?action=getCategories')
         .then(response => response.json())
         .then(data => {
           const categorySelect = document.getElementById('category');
@@ -69,10 +69,17 @@
     document.getElementById('transaction-form').addEventListener('submit', function(event) {
       event.preventDefault();
       const formData = new FormData(this);
+
+      // Formattazione della data in GG/MM/AAAA
+      const dateInput = document.getElementById('date').value;
+      const formattedDate = new Date(dateInput).toLocaleDateString('it-IT'); // Formattazione in formato italiano
+
+      formData.set('date', formattedDate);  // Sostituisci la data formattata
+
       document.getElementById('success-message').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
 
-      fetch('https://script.google.com/macros/s/AKfycbyaetiIJYgZn3YhUKAnrlnkmEBScPhdbOGc50xmaF1MRFKrFcuNU_IQUavAYj_irm2y/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbxVqgVp0S4TuKLs4OQixU00TyMcL3lRRnFw9cnGVpaVxCdCJpCneKTSyhFywEFsrJz_/exec', {
         method: 'POST',
         body: new URLSearchParams(formData)
       })
