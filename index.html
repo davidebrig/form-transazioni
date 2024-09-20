@@ -72,6 +72,7 @@
         filteredSuggestions.forEach(suggestion => {
           const suggestionElement = document.createElement('div');
           suggestionElement.textContent = suggestion;
+          suggestionElement.className = 'autocomplete-suggestion';
           suggestionElement.onclick = () => {
             document.getElementById('description').value = suggestion;
             suggestionsContainer.innerHTML = '';
