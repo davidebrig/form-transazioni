@@ -48,7 +48,7 @@
 
     // Funzione per popolare il menu Categoria con i dati dal foglio Mappatura
     function fetchCategories() {
-      fetch('https://script.google.com/macros/s/AKfycbxVqgVp0S4TuKLs4OQixU00TyMcL3lRRnFw9cnGVpaVxCdCJpCneKTSyhFywEFsrJz_/exec?action=getCategories')
+      fetch('https://script.google.com/macros/s/AKfycbxfK01R2piPa9YEgQcjpnfz95ZGxykDsDK4gJ4w_76unK3xlXJ-NCcSaQMNyeiIy4H2/exec?action=getCategories')
         .then(response => response.json())
         .then(data => {
           const categorySelect = document.getElementById('category');
@@ -79,7 +79,7 @@
       document.getElementById('success-message').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
 
-      fetch('https://script.google.com/macros/s/AKfycbxVqgVp0S4TuKLs4OQixU00TyMcL3lRRnFw9cnGVpaVxCdCJpCneKTSyhFywEFsrJz_/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbxfK01R2piPa9YEgQcjpnfz95ZGxykDsDK4gJ4w_76unK3xlXJ-NCcSaQMNyeiIy4H2/exec', {
         method: 'POST',
         body: new URLSearchParams(formData)
       })
