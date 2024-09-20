@@ -21,16 +21,16 @@
       </div>
 
       <div class="form-group">
-        <label for="description">Descrizione:</label>
-        <input type="text" id="description" name="description" autocomplete="off">
-        <div id="suggestions" class="autocomplete-suggestions"></div>
-      </div>
-
-      <div class="form-group">
         <label for="category">Categoria:</label>
         <select id="category" name="category" required>
           <option value="">Seleziona una categoria</option>
         </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="description">Descrizione:</label>
+        <input type="text" id="description" name="description" autocomplete="off">
+        <div id="suggestions" class="autocomplete-suggestions"></div>
       </div>
 
       <button type="submit" class="submit-button">Invia</button>
@@ -40,7 +40,7 @@
   </div>
 
   <script>
-    const suggestionsList = ["pasticceria sirmione", "telepass", "satispay", "icloud", "estetista", "calza befana", "django gioco", "stampa lettera", "bar", "benzina", "merenda", "cookiebot", "rata auto", "integratori", "pagamento", "caffe", "iperal", "bytek", "mc", "autogrill", "focaccia", "mr dick", "ricarica tim", "carta credito", "colazione", "esselunga", "risparmio", "netflix", "piadina", "kart", "pizza", "sigarette", "polizza", "spotify", "maglione venduto", "pizzam", "sig e perdi", "zio pizza", "farmaci", "vapery", "parcheggio", "aruba", "regalo s valentino", "past verga", "chiacchiere", "wipstore 1", "coca", "sisal", "aperitivo", "caparra", "pizze", "cancelleria", "sigarette emotion", "tergi gio", "televisore", "spazzola piatti", "hotel", "pepco", "poke", "pane", "agenzia", "brita", "repcount app", "trenord", "pranzo", "rimborso casa gio", "tubo", "acido m", "fiori", "soundbar sonos", "acqua", "coin", "dominio sg davide", "ikea", "anello", "italmark", "bilancia cover", "scrivania ikea", "eremo", "molla", "cont deposito", "affitto cauzione", "spesina", "spesa", "gratta vinci", "prese", "rimborso gio", "rimborso deliveroo", "amazon adattatori", "pata", "aceto bicarbonato", "l'oreal x elena", "l'oreal x me", "marzo", "rimborso loreal", "mercato", "gelato", "braccio monitor", "biliardo", "tigota", "affitto", "portaposate", "coprimarer", "materasso cose", "eselunga", "svapo", "bollo titoli", "psicologa", "caffee", "cose casa amazon", "hamburger", "polpetteria", "asparagi", "assicurazione", "imac molteni", "tigota", "aliexpress intimo", "filtro cucina amazon", "amazon joystick", "gas enel", "affitto gio luglio", "tim casa", "14esima", "nen luce luglio", "soldi mamma in conto deposito", "abbonamento microsoft", "mobile deghi", "velcro adesivo", "spesina", "spiderman", "cookiebot", "webcam logitech", "booking napoli", "giovanni mese giugno+luglio", "gas enel", "affitto agosto", "luce agosto nen", "colazione", "svapo", "macfact", "mutande", "panta", "calliope", "granita", "lavaggio auto", "cascata delle marmore", "kebab", "svapo pod", "nonni regalo", "pareo gio", "diplomatico", "impermeabili", "regali vacanze", "decathlon", "caffe e pizzetta", "scarpe UA forge 96", "ikea besta", "titoli investimento", "titoli conto deposito", "filma", "noleggio film", "ikea pappa", "film donnie darko", "piadina deliveroo", "bottega verde", "cinesi", "oneblade papa", "affitto agosto", "tim casa luglio", "parcheggio aeroporto", "cinema", "cibo cinema"];
+    const suggestionsList = ["brioche", "pasticceria sirmione", "telepass", "satispay", "icloud", "estetista", "calza befana", "django gioco", "stampa lettera", "bar", "benzina", "merenda", "cookiebot", "rata auto", "integratori", "pagamento", "caffe", "iperal", "bytek", "mc", "autogrill", "focaccia", "mr dick", "ricarica tim", "carta credito", "colazione", "esselunga", "risparmio", "netflix", "piadina", "kart", "pizza", "sigarette", "polizza", "spotify", "maglione venduto", "pizzam", "sig e perdi", "zio pizza", "farmaci", "vapery", "parcheggio", "aruba", "regalo s valentino", "past verga", "chiacchiere", "wipstore 1", "coca", "sisal", "aperitivo", "caparra", "pizze", "cancelleria", "sigarette emotion", "tergi gio", "televisore", "spazzola piatti", "hotel", "pepco", "poke", "pane", "agenzia", "brita", "repcount app", "trenord", "pranzo", "rimborso casa gio", "tubo", "acido m", "fiori", "soundbar sonos", "acqua", "coin", "dominio sg davide", "ikea", "anello", "italmark", "bilancia cover", "scrivania ikea", "eremo", "molla", "cont deposito", "affitto cauzione", "spesina", "spesa", "gratta vinci", "prese", "rimborso gio", "rimborso deliveroo", "amazon adattatori", "pata", "aceto bicarbonato", "l'oreal x elena", "l'oreal x me", "marzo", "rimborso loreal", "mercato", "gelato", "braccio monitor", "biliardo", "tigota", "affitto", "portaposate", "coprimarer", "materasso cose", "eselunga", "svapo", "bollo titoli", "psicologa", "caffee", "cose casa amazon", "hamburger", "polpetteria", "asparagi", "assicurazione", "imac molteni", "tigota", "aliexpress intimo", "filtro cucina amazon", "amazon joystick", "gas enel", "affitto gio luglio", "tim casa", "14esima", "nen luce luglio", "soldi mamma in conto deposito", "abbonamento microsoft", "mobile deghi", "velcro adesivo", "spesina", "spiderman", "cookiebot", "webcam logitech", "booking napoli", "giovanni mese giugno+luglio", "gas enel", "affitto agosto", "luce agosto nen", "colazione", "svapo", "macfact", "mutande", "panta", "calliope", "granita", "lavaggio auto", "cascata delle marmore", "kebab", "svapo pod", "nonni regalo", "pareo gio", "diplomatico", "impermeabili", "regali vacanze", "decathlon", "caffe e pizzetta", "scarpe UA forge 96", "ikea besta", "titoli investimento", "titoli conto deposito", "filma", "noleggio film", "ikea pappa", "film donnie darko", "piadina deliveroo", "bottega verde", "cinesi", "oneblade papa", "affitto agosto", "tim casa luglio", "parcheggio aeroporto", "cinema", "cibo cinema"];
 
     // Precompilazione del campo data con la data corrente in formato GG/MM/AAAA
     window.onload = function() {
