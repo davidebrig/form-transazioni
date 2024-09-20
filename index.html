@@ -3,132 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form Transazioni</title>
+  <title>Davide - Registra transazione</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="form-container">
-    <h1>Nuova Transazione</h1>
+    <h1>💸 Davide - Registra transazione</h1>
     <form id="transaction-form">
       <div class="form-group">
-        <label for="date">Data</label>
+        <label for="date">Data:</label>
         <input type="date" id="date" name="date" required>
       </div>
 
       <div class="form-group">
-        <label for="amount">Importo</label>
+        <label for="amount">Importo:</label>
         <input type="number" id="amount" name="amount" step="0.01" min="0" inputmode="decimal" required>
       </div>
 
       <div class="form-group">
-        <label for="description">Descrizione</label>
+        <label for="description">Descrizione:</label>
         <input type="text" id="description" name="description">
       </div>
 
       <div class="form-group">
-        <label for="category">Categoria</label>
-        <select id="category" name="category" required></select>
-      </div>
-
-      <div class="form-group">
-        <label for="subcategory">Sottocategoria</label>
-        <select id="subcategory" name="subcategory" required></select>
-      </div>
-
-      <div class="form-group">
-        <label for="type">Tipologia</label>
-        <input type="text" id="type" name="type" readonly>
-      </div>
-
-      <div class="form-group">
-        <label for="class">Classe</label>
-        <input type="text" id="class" name="class" readonly>
+        <label for="category">Categoria:</label>
+        <select id="category" name="category" required>
+          <option value="">Seleziona una categoria</option>
+        </select>
       </div>
 
       <button type="submit" class="submit-button">Invia</button>
-      <div class="success-message" id="success-message" style="display: none;"></div>
-      <div class="error-message" id="error-message" style="display: none;"></div>
+      <p id="success-message" class="success-message" style="display:none;">Transazione registrata con successo!</p>
+      <p id="error-message" class="error-message" style="display:none;">Si è verificato un errore. Riprova.</p>
     </form>
   </div>
 
   <script>
-    const apiUrl = 'https://script.google.com/macros/s/AKfycbwy1PBjpwG74QgjA9FG6UOWuotKNf-_aG3MXxTmow3qdfVNgy3L7SGhjIBfHJ9ScZEb/exec';
+    // Precompilazione del campo data con la data corrente in formato GG/MM/AAAA
+    window.onload = function() {
+      const today = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+      document.getElementById('date').value = today;
+      fetchCategories(); // Carica le categorie
+    };
 
-    document.addEventListener('DOMContentLoaded', function () {
-      fetch(`${apiUrl}?action=getCategories`)
+    // Funzione per popolare il menu Categoria con i dati dal foglio Mappatura
+    function fetchCategories() {
+      fetch('https://script.google.com/macros/s/AKfycby57LCrhg9Enm34kz1krze38cRVEZFJhZmZ9854bq1nmNpkGJTaU-N45cTVzn8FNr0k/exec?action=getCategories')
         .then(response => response.json())
         .then(data => {
           const categorySelect = document.getElementById('category');
           data.categories.forEach(category => {
             const option = document.createElement('option');
             option.value = category;
-            option.textContent = category;
-            categorySelect.appendChild(option);
+            option.text = category;
+            categorySelect.add(option);
           });
-        });
-
-      document.getElementById('category').addEventListener('change', function () {
-        const selectedCategory = this.value;
-        fetch(`${apiUrl}?action=getSubcategories&category=${selectedCategory}`)
-          .then(response => response.json())
-          .then(data => {
-            const subcategorySelect = document.getElementById('subcategory');
-            subcategorySelect.innerHTML = ''; // Svuota il menu precedente
-            data.subcategories.forEach(subcategory => {
-              const option = document.createElement('option');
-              option.value = subcategory;
-              option.textContent = subcategory;
-              subcategorySelect.appendChild(option);
-            });
-          });
-      });
-
-      document.getElementById('subcategory').addEventListener('change', function () {
-        const selectedSubcategory = this.value;
-        fetch(`${apiUrl}?action=getTypeClass&subcategory=${selectedSubcategory}`)
-          .then(response => response.json())
-          .then(data => {
-            document.getElementById('type').value = data.type;
-            document.getElementById('class').value = data.class;
-          });
-      });
-
-      document.getElementById('transaction-form').addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        const formData = new FormData(this);
-        const data = {};
-        formData.forEach((value, key) => {
-          data[key] = value;
-        });
-
-        fetch(apiUrl, {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        })
-        .then(response => response.json())
-        .then(result => {
-          const successMessage = document.getElementById('success-message');
-          const errorMessage = document.getElementById('error-message');
-          if (result.success) {
-            successMessage.textContent = 'Transazione aggiunta con successo!';
-            successMessage.style.display = 'block';
-            errorMessage.style.display = 'none';
-            this.reset(); // Resetta il form
-          } else {
-            errorMessage.textContent = 'Errore: ' + result.message;
-            errorMessage.style.display = 'block';
-            successMessage.style.display = 'none';
-          }
         })
         .catch(error => {
-          const errorMessage = document.getElementById('error-message');
-          errorMessage.textContent = 'Errore di rete: ' + error.message;
-          errorMessage.style.display = 'block';
+          console.error('Errore durante il recupero delle categorie:', error);
+          document.getElementById('error-message').style.display = 'block';
         });
+    }
+
+    // Funzione per inviare il form ad Apps Script
+    document.getElementById('transaction-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+
+      // Formattazione della data in GG/MM/AAAA
+      const dateInput = document.getElementById('date').value;
+      const formattedDate = new Date(dateInput).toLocaleDateString('it-IT'); // Formattazione in formato italiano
+
+      formData.set('date', formattedDate);  // Sostituisci la data formattata
+
+      document.getElementById('success-message').style.display = 'none';
+      document.getElementById('error-message').style.display = 'none';
+
+      fetch('https://script.google.com/macros/s/AKfycby57LCrhg9Enm34kz1krze38cRVEZFJhZmZ9854bq1nmNpkGJTaU-N45cTVzn8FNr0k/exec', {
+        method: 'POST',
+        body: new URLSearchParams(formData)
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.success) {
+          document.getElementById('success-message').style.display = 'block';
+          document.getElementById('transaction-form').reset();  // Reset del form dopo invio
+        } else {
+          document.getElementById('error-message').style.display = 'block';
+        }
+      })
+      .catch(error => {
+        console.error('Errore durante l\'invio del form:', error);
+        document.getElementById('error-message').style.display = 'block';
       });
     });
   </script>
