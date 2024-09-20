@@ -5,6 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Davide - Registra transazione</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .autocomplete-suggestions {
+      border: 1px solid #ccc;
+      max-height: 150px;
+      overflow-y: auto;
+      position: absolute;
+      z-index: 1000;
+      background: white;
+      width: calc(100% - 2px);
+    }
+    .autocomplete-suggestion {
+      padding: 8px;
+      cursor: pointer;
+    }
+    .autocomplete-suggestion:hover {
+      background: #f0f0f0;
+    }
+  </style>
 </head>
 <body>
   <div class="form-container">
@@ -22,7 +40,8 @@
 
       <div class="form-group">
         <label for="description">Descrizione:</label>
-        <input type="text" id="description" name="description">
+        <input type="text" id="description" name="description" autocomplete="off">
+        <div id="suggestions" class="autocomplete-suggestions"></div>
       </div>
 
       <div class="form-group">
@@ -39,6 +58,13 @@
   </div>
 
   <script>
+    const suggestionsList = [
+      "pasticceria sirmione", "telepass", "satispay", "icloud", "estetista", "calza befana",
+      "django gioco", "stampa lettera", "bar", "benzina", "merenda", "cookiebot", "rata auto",
+      // Aggiungi qui le altre voci...
+      "sigarette", "pizza", "gelato", "caffe", "parcheggio", "spesa", "film noleggio"
+    ];
+
     // Precompilazione del campo data con la data corrente in formato GG/MM/AAAA
     window.onload = function() {
       const today = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
@@ -64,6 +90,28 @@
           document.getElementById('error-message').style.display = 'block';
         });
     }
+
+    // Autocompletamento per il campo "Descrizione"
+    const descriptionInput = document.getElementById('description');
+    const suggestionsBox = document.getElementById('suggestions');
+
+    descriptionInput.addEventListener('input', function() {
+      const input = this.value.toLowerCase();
+      suggestionsBox.innerHTML = '';
+      if (input) {
+        const filteredSuggestions = suggestionsList.filter(suggestion => suggestion.toLowerCase().includes(input));
+        filteredSuggestions.forEach(suggestion => {
+          const suggestionItem = document.createElement('div');
+          suggestionItem.className = 'autocomplete-suggestion';
+          suggestionItem.innerText = suggestion;
+          suggestionItem.onclick = function() {
+            descriptionInput.value = suggestion;
+            suggestionsBox.innerHTML = '';
+          };
+          suggestionsBox.appendChild(suggestionItem);
+        });
+      }
+    });
 
     // Funzione per inviare il form ad Apps Script
     document.getElementById('transaction-form').addEventListener('submit', function(event) {
