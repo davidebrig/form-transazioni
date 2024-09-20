@@ -115,6 +115,18 @@
         document.getElementById('error-message').style.display = 'block';
       }
     });
+
+    // Gestione del clic al di fuori del campo di input
+    document.addEventListener('click', function(event) {
+      const suggestionsContainer = document.getElementById('suggestions');
+      const descriptionInput = document.getElementById('description');
+
+      // Controlla se il clic è stato fatto fuori dal campo di input o dal menu dei suggerimenti
+      if (!descriptionInput.contains(event.target) && !suggestionsContainer.contains(event.target)) {
+        suggestionsContainer.innerHTML = ''; // Nasconde i suggerimenti
+        suggestionsContainer.style.display = 'none'; // Nasconde il contenitore
+      }
+    });
   </script>
 </body>
 </html>
