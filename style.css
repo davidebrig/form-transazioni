@@ -96,10 +96,32 @@ button.submit-button:hover {
   text-align: center;
 }
 
+.autocomplete-suggestions {
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  width: 360px;
+}
+
+.autocomplete-suggestion {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.autocomplete-suggestion:hover {
+  background: #f0f0f0;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .form-container {
     width: 90%;
+  }
+  .autocomplete-suggestions {
+    width: 311px;
   }
 }
 
