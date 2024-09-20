@@ -1,6 +1,13 @@
+/* Reset dei margini e padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f9;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f5f5;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,22 +16,29 @@ body {
 }
 
 .form-container {
-  background-color: #ffffff;
+  background-color: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 400px;
 }
 
 h1 {
   font-size: 24px;
+  color: #3c4043;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
   margin-bottom: 20px;
 }
 
 label {
-  font-size: 14px;
-  margin-bottom: 5px;
+  font-size: 16px;
+  color: #5f6368;
+  margin-bottom: 8px;
   display: block;
 }
 
@@ -33,34 +47,62 @@ input[type="date"],
 input[type="number"],
 select {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
+  padding: 12px;
+  border: 1px solid #dadce0;
   border-radius: 4px;
   font-size: 16px;
+  color: #202124;
+  background-color: white;
+  transition: border-color 0.2s;
 }
 
-button {
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: #1a73e8;
+  outline: none;
+}
+
+button.submit-button {
   width: 100%;
-  padding: 10px;
-  background-color: #4CAF50;
+  padding: 12px;
+  background-color: #1a73e8;
   color: white;
   border: none;
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-button:hover {
-  background-color: #45a049;
+button.submit-button:hover {
+  background-color: #135ab0;
 }
 
 .success-message {
   color: green;
+  font-size: 14px;
   margin-top: 10px;
+  text-align: center;
 }
 
 .error-message {
   color: red;
+  font-size: 14px;
   margin-top: 10px;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-container {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
 }
