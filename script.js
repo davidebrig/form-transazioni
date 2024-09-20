@@ -8,7 +8,7 @@ document.getElementById('transactionForm').onsubmit = function(e) {
     category: document.getElementById('category').value
   };
 
-  fetch('https://script.google.com/macros/s/AKfycbypP331jlXBlkOrT1o1I0iS9pWtqzIFlCu5ZRMTmUceuIQLrRTqpHqIeXFZgmCRcUuS/exec', {
+  fetch('https://script.google.com/macros/s/AKfycbwPb2j1jdDHYm579xVNowNXLTE7tbpYHy2w55-s4Ae_UPc5lSDxdsSv4eetmOkmrNPi/exec', {
     method: 'POST',
     mode: 'no-cors',
     headers: {
