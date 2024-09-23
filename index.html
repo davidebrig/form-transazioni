@@ -9,7 +9,7 @@
 <body>
   <div>
     <h1>Davide - Registra transazione</h1>
-  <div>
+  </div>
   <div class="form-container">
     <form id="transaction-form">
       <div class="form-group">
@@ -28,7 +28,12 @@
           <option value="">Seleziona una categoria</option>
         </select>
       </div>
-      
+
+      <!-- Testo per Sottocategoria, Tipi e Classe -->
+      <div id="subcategory-info" class="info-text">
+        <!-- Qui verranno mostrati Sottocategoria, Tipi e Classe -->
+      </div>
+
       <div class="form-group">
         <label for="description">Descrizione</label>
         <input type="text" id="description" name="description" autocomplete="off">
@@ -43,55 +48,51 @@
 
   <script>
     const suggestionsList = ["brioche", "pasticceria sirmione", "telepass", "satispay", "icloud", "estetista", "calza befana", "django gioco", "stampa lettera", "bar", "benzina", "merenda", "cookiebot", "rata auto", "integratori", "pagamento", "caffe", "iperal", "bytek", "mc", "autogrill", "focaccia", "mr dick", "ricarica tim", "carta credito", "colazione", "esselunga", "risparmio", "netflix", "piadina", "kart", "pizza", "sigarette", "polizza", "spotify", "maglione venduto", "pizzam", "sig e perdi", "zio pizza", "farmaci", "vapery", "parcheggio", "aruba", "regalo s valentino", "past verga", "chiacchiere", "wipstore 1", "coca", "sisal", "aperitivo", "caparra", "pizze", "cancelleria", "sigarette emotion", "tergi gio", "televisore", "spazzola piatti", "hotel", "pepco", "poke", "pane", "agenzia", "brita", "repcount app", "trenord", "pranzo", "rimborso casa gio", "tubo", "acido m", "fiori", "soundbar sonos", "acqua", "coin", "dominio sg davide", "ikea", "anello", "italmark", "bilancia cover", "scrivania ikea", "eremo", "molla", "cont deposito", "affitto cauzione", "spesina", "spesa", "gratta vinci", "prese", "rimborso gio", "rimborso deliveroo", "amazon adattatori", "pata", "aceto bicarbonato", "l'oreal x elena", "l'oreal x me", "marzo", "rimborso loreal", "mercato", "gelato", "braccio monitor", "biliardo", "tigota", "affitto", "portaposate", "coprimarer", "materasso cose", "eselunga", "svapo", "bollo titoli", "psicologa", "caffee", "cose casa amazon", "hamburger", "polpetteria", "asparagi", "assicurazione", "imac molteni", "tigota", "aliexpress intimo", "filtro cucina amazon", "amazon joystick", "gas enel", "affitto gio luglio", "tim casa", "14esima", "nen luce luglio", "soldi mamma in conto deposito", "abbonamento microsoft", "mobile deghi", "velcro adesivo", "spesina", "spiderman", "cookiebot", "webcam logitech", "booking napoli", "giovanni mese giugno+luglio", "gas enel", "affitto agosto", "luce agosto nen", "colazione", "svapo", "macfact", "mutande", "panta", "calliope", "granita", "lavaggio auto", "cascata delle marmore", "kebab", "svapo pod", "nonni regalo", "pareo gio", "diplomatico", "impermeabili", "regali vacanze", "decathlon", "caffe e pizzetta", "scarpe UA forge 96", "ikea besta", "titoli investimento", "titoli conto deposito", "filma", "noleggio film", "ikea pappa", "film donnie darko", "piadina deliveroo", "bottega verde", "cinesi", "oneblade papa", "affitto agosto", "tim casa luglio", "parcheggio aeroporto", "cinema", "cibo cinema"];
-   
+  
     // Precompilazione del campo data con la data corrente
     document.getElementById('date').value = new Date().toISOString().split('T')[0];
 
-    // Funzione per recuperare le categorie
+    // Funzione per recuperare le categorie e i relativi dettagli
     async function fetchCategories() {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbwVlGW7wL6r9-mwJJaNIbJMIYEBaYYzwRonV16vChh_gTr2npYMI9uANoC-06c0NTgy/exec?action=getCategories');
+      const response = await fetch('https://script.google.com/macros/s/AKfycbw2fg-Q7mTGKQ7RMZ07sfVy-oU31nHlrhb7y-G-xFh_Rbu3__fwOJg01lB4f_ZHTOzV/exec?action=getCategories');
       const data = await response.json();
       const categorySelect = document.getElementById('category');
+
       data.categories.forEach(category => {
         const option = document.createElement('option');
-        option.value = category;
-        option.textContent = category;
+        option.value = category.name;  // Assumendo che la categoria abbia una proprietà 'name'
+        option.textContent = category.name;
         categorySelect.appendChild(option);
       });
+
+      // Aggiungi evento di aggiornamento al cambio della categoria
+      categorySelect.addEventListener('change', function() {
+        updateSubcategoryInfo(data, this.value);
+      });
+    }
+
+    // Funzione per aggiornare le informazioni di Sottocategoria, Tipi e Classe
+    function updateSubcategoryInfo(data, selectedCategory) {
+      const subcategoryInfo = document.getElementById('subcategory-info');
+      
+      // Cerca la categoria selezionata e le sue informazioni
+      const categoryDetails = data.categories.find(category => category.name === selectedCategory);
+      
+      if (categoryDetails) {
+        const subcategory = categoryDetails.subcategory || "N/A";
+        const type = categoryDetails.type || "N/A";
+        const classInfo = categoryDetails.class || "N/A";
+        
+        // Aggiorna il contenuto con Sottocategoria, Tipi e Classe
+        subcategoryInfo.textContent = `${subcategory} - ${type} - ${classInfo}`;
+      } else {
+        // Reset nel caso in cui non ci siano dati corrispondenti
+        subcategoryInfo.textContent = '';
+      }
     }
 
     // Chiamata per recuperare le categorie all'apertura della pagina
     window.onload = fetchCategories;
-
-    // Funzione per gestire l'autocompletamento
-    function showSuggestions(value) {
-      const suggestionsContainer = document.getElementById('suggestions');
-      suggestionsContainer.innerHTML = '';
-      if (value) {
-        const filteredSuggestions = suggestionsList.filter(suggestion => 
-          suggestion.toLowerCase().includes(value.toLowerCase())
-        );
-        filteredSuggestions.forEach(suggestion => {
-          const suggestionElement = document.createElement('div');
-          suggestionElement.textContent = suggestion;
-          suggestionElement.className = 'autocomplete-suggestion';
-          suggestionElement.onclick = () => {
-            document.getElementById('description').value = suggestion;
-            suggestionsContainer.innerHTML = '';
-            suggestionsContainer.style.display = 'none';
-          };
-          suggestionsContainer.appendChild(suggestionElement);
-        });
-        suggestionsContainer.style.display = filteredSuggestions.length ? 'block' : 'none';
-      } else {
-        suggestionsContainer.style.display = 'none';
-      }
-    }
-
-    // Evento per gestire l'input nel campo descrizione
-    document.getElementById('description').addEventListener('input', function() {
-      showSuggestions(this.value);
-    });
 
     // Gestione della sottomissione del form
     document.getElementById('transaction-form').addEventListener('submit', async function(event) {
@@ -100,7 +101,7 @@
       const data = Object.fromEntries(formData);
 
       try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbwVlGW7wL6r9-mwJJaNIbJMIYEBaYYzwRonV16vChh_gTr2npYMI9uANoC-06c0NTgy/exec', {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbw2fg-Q7mTGKQ7RMZ07sfVy-oU31nHlrhb7y-G-xFh_Rbu3__fwOJg01lB4f_ZHTOzV/exec', {
           method: 'POST',
           body: new URLSearchParams(data)
         });
@@ -115,18 +116,6 @@
       } catch (error) {
         document.getElementById('error-message').textContent = error.message;
         document.getElementById('error-message').style.display = 'block';
-      }
-    });
-
-    // Gestione del clic al di fuori del campo di input
-    document.addEventListener('click', function(event) {
-      const suggestionsContainer = document.getElementById('suggestions');
-      const descriptionInput = document.getElementById('description');
-
-      // Controlla se il clic è stato fatto fuori dal campo di input o dal menu dei suggerimenti
-      if (!descriptionInput.contains(event.target) && !suggestionsContainer.contains(event.target)) {
-        suggestionsContainer.innerHTML = ''; // Nasconde i suggerimenti
-        suggestionsContainer.style.display = 'none'; // Nasconde il contenitore
       }
     });
   </script>
