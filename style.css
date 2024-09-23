@@ -119,6 +119,12 @@ button.submit-button:hover {
   background: #3a3a3c;
 }
 
+.info-text {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .form-container {
