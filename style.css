@@ -128,7 +128,7 @@ button.submit-button:hover {
 /* Responsive Design */
 @media (max-width: 768px) {
   .autocomplete-suggestions {
-    width: 281px;
+    width: 257px;
   }
 }
 
