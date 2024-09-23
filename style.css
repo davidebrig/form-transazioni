@@ -77,7 +77,7 @@ button.submit-button {
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-weight: 600;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 button.submit-button:hover {
