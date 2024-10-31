@@ -21,7 +21,7 @@ body {
   padding: 20px;
   border-radius: 12px; /* More rounded corners typical of Apple */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Soft shadow for depth */
-  width: 100%;
+  width: 400px;
   max-width: 400px;
 }
 
