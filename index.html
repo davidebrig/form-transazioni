@@ -101,6 +101,7 @@
 
       // Disabilita il pulsante e mostra lo spinner
       submitButton.disabled = true;
+      submitButton.style.opacity = '0.6';
       buttonText.style.display = 'none';
       loadingSpinner.style.display = 'inline-block';
 
@@ -123,6 +124,7 @@
       } finally {
         // Riabilita il pulsante e nascondi lo spinner
         submitButton.disabled = false;
+        submitButton.style.opacity = '1';
         buttonText.style.display = 'inline';
         loadingSpinner.style.display = 'none';
       }
