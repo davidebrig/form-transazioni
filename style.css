@@ -18,10 +18,10 @@ body {
 }
 
 .form-container {
-  background-color: #2c2c2e; /* Slightly lighter dark background for the form */
-  padding: 20px;
-  border-radius: 12px; /* More rounded corners typical of Apple */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Soft shadow for depth */
+  background-color: #1c1c1e;
+  padding: 0px;
+  border-radius: 0px;
+  box-shadow: none;
   width: 350px;
   max-width: 400px;
 }
@@ -55,7 +55,7 @@ select {
   border-radius: 8px; /* Rounded corners */
   font-size: 16px;
   color: #f5f5f7;
-  background-color: #1c1c1e; /* Darker input background */
+  background-color: #3a3a3c; /* Darker input background */
   transition: border-color 0.2s ease;
   min-height: 48.5px;
 }
