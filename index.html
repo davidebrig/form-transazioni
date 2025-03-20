@@ -83,12 +83,7 @@
       });
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        fetchSubcategories();
-        setTimeout(() => {
-            document.getElementById("amount").focus();
-        }, 100);
-    });
+    document.addEventListener("DOMContentLoaded", fetchSubcategories);
 
     function showSuggestions(value) {
       const suggestionsContainer = document.getElementById('suggestions');
