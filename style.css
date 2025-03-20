@@ -66,7 +66,7 @@ input[type="number"]:focus,
 select:focus {
   border-color: #007aff; /* Blue accent typical of Apple’s focus states */
   outline: none;
-  min-height: 48.5px;
+  min-height: 60px;
 }
 
 button.submit-button {
