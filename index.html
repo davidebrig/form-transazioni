@@ -83,7 +83,12 @@
       });
     }
 
-    document.addEventListener("DOMContentLoaded", fetchSubcategories);
+    document.addEventListener("DOMContentLoaded", () => {
+        fetchSubcategories();
+        setTimeout(() => {
+            document.getElementById("amount").focus();
+        }, 100);
+    });
 
     function showSuggestions(value) {
       const suggestionsContainer = document.getElementById('suggestions');
